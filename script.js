@@ -1574,7 +1574,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── 3D Tilt Effect on Movie Cards ────────────────────────────────────────
 (function () {
     const TILT_MAX   = 12;   // max degrees rotation
-    const SCALE      = 1.06; // scale on hover
+    const SCALE      = 1.1;  // scale on hover
     const GLOW_COLOR = '94, 232, 82'; // accent green
 
     function applyTilt(card, e) {
@@ -1642,11 +1642,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Scroll Fade-in Reveal Effect using IntersectionObserver
-    // Add "reveal" class to elements we want to animate (e.g. section-headers, cards container, etc.)
-    const revealElements = document.querySelectorAll('.movie-section:not(.reveal), .section-header:not(.reveal), .pricing-card:not(.reveal), .feature-item:not(.reveal)');
+    // Avoid applying reveal to entire grid sections that might break sub-pages
+    const revealElements = document.querySelectorAll('.movie-section:not(.no-reveal):not(.reveal), .section-header:not(.reveal), .pricing-card:not(.reveal)');
     
-    // Automatically attach reveal class to all these elements
-    revealElements.forEach(el => el.classList.add('reveal'));
+    // Automatically attach reveal class to these elements
+    revealElements.forEach(el => {
+        // Bug Fix: Don't hide the main movies grid container on subpages
+        if (el.querySelector('.movies-grid#movies-page-grid') || el.querySelector('.movies-grid#tvshows-page-grid')) {
+            return;
+        }
+        el.classList.add('reveal');
+    });
 
     const activeRevealElements = document.querySelectorAll('.reveal');
 
@@ -1762,3 +1768,36 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // ─────────────────────────────────────────────────────────────────────
 
+// ── Mobile Menu (Drawer) Handling ────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    // Create overlay if it doesn't exist
+    let overlay = document.querySelector('.drawer-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'drawer-overlay';
+        document.body.appendChild(overlay);
+    }
+
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-active');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            navLinks.classList.remove('mobile-active');
+            overlay.classList.remove('active');
+        });
+
+        // Close on link click
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('mobile-active');
+                overlay.classList.remove('active');
+            });
+        });
+    }
+});

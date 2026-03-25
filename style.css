@@ -278,12 +278,20 @@ ul {
     clip-path: polygon(0 0, 26% 0, 26% 100%, 0 100%);
 }
 
+.mobile-menu-btn {
+    display: none;
+    font-size: 28px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+}
+.mobile-menu-btn:hover { color: var(--accent); }
+
 .logo-text-part {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 1;
-    clip-path: polygon(26% 0, 100% 0, 100% 100%, 26% 100%);
     filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(692%) hue-rotate(58deg) brightness(97%) contrast(92%);
 }
 
@@ -755,10 +763,20 @@ ul {
     opacity: 1;
 }
 
+.movie-row .movie-card:hover,
+.movies-grid .movie-card:hover,
 .movie-card:hover {
-    transform: scale(1.08); /* Scaling up slightly on hover like Netflix */
-    z-index: 50;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    transform: scale(1.12); /* Slightly more aggressive scale */
+    z-index: 500;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.9), 0 0 30px rgba(94,232,82,0.4);
+    outline: 2px solid var(--accent);
+}
+
+/* Ensure JS Tilt works by allowing inline style to win when mouse is moving */
+/* But CSS provides back up */
+.movie-card {
+    will-change: transform;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
 }
 
 .play-circle {
@@ -963,7 +981,9 @@ ul {
 
 .movies-grid .movie-card {
     min-width: unset; 
-    height: 330px; /* Poster aspect ratio for individual movie browsing */
+    height: 330px; /* Poster aspect ratio */
+    aspect-ratio: 2/3;
+    width: 100%;
 }
 
 
@@ -1758,48 +1778,141 @@ body.page-transition-out {
 .search-dropdown::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 /* ─────────────────────────────────────────────────────────────────── */
 
-/* ── Responsive Architecture ────────────────────────────────────────── */
-@media (max-width: 1200px) {
-    .main-content { padding: 80px 4%; }
-    .hero-content h1 { font-size: 3.5rem; }
-}
-
+/* ── Responsive Architecture Fixes ────────────────────────────────── */
 @media (max-width: 992px) {
     .nav-links { display: none; }
-    .mobile-menu-btn { display: block; }
-    .hero-content h1 { font-size: 2.8rem; }
-    .hero-content p { font-size: 1rem; max-width: 100%; }
-    .movies-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
+    .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+    .hero-content h1 { font-size: 2.5rem; text-align: center; }
+    .hero-content p { font-size: 0.95rem; text-align: center; max-width: 90%; margin: 0 auto 20px; }
+    .hero-buttons { flex-direction: column; width: 100%; gap: 10px; }
+    .hero-buttons .btn { width: 100%; justify-content: center; }
 }
 
 @media (max-width: 768px) {
-    .hero { height: 70vh; padding-top: 100px; }
-    .hero-content { text-align: center; align-items: center; }
-    .hero-btns { justify-content: center; width: 100%; }
+    .navbar { padding: 15px 5%; height: 70px; }
+    .logo-text-part { display: block !important; width: 80px; height: auto; } /* Show logo text part */
+    .logo { gap: 5px; }
     
-    .footer-content { flex-direction: column; gap: 40px; }
-    .footer-brand { text-align: center; align-items: center; }
-    .footer-links { grid-template-columns: 1fr; text-align: center; }
-    .footer-nav-links li i { display: none; }
+    .hero { min-height: 80vh; padding-top: 100px; padding-bottom: 40px; }
+    .hero-meta { justify-content: center; flex-wrap: wrap; }
     
-    .modal-box { width: 95%; height: 90vh; }
-    .modal-trailer-wrap { height: 200px; }
-    .modal-title { font-size: 24px; }
+    .main-content { margin-top: 20px; padding-top: 0; }
+    .section-header { margin-top: 20px; }
     
-    .search-box { width: 100%; max-width: none; }
-    .user-details { display: none; }
-    .user-display { padding: 4px; }
+    /* Mobile Drawer Styles */
+    .nav-links.mobile-active {
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 70%;
+        height: 100vh;
+        background: var(--bg-secondary);
+        flex-direction: column;
+        padding: 80px 30px;
+        z-index: 1001;
+        box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-links.mobile-active li { width: 100%; }
+    /* Mobile Drawer Styles Improvements */
+    .nav-links.mobile-active {
+        display: flex;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 70%;
+        height: 100vh;
+        background: #111114 !important; /* Solid dark background */
+        flex-direction: column;
+        padding: 100px 40px;
+        z-index: 2100; /* Extremely high */
+        box-shadow: -15px 0 40px rgba(0,0,0,0.9);
+        animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: none !important; /* Remove blur from drawer itself */
+    }
+    .nav-links.mobile-active a { 
+        font-size: 20px; 
+        padding: 18px 0; 
+        color: #ffffff !important; /* Pure white text */
+        font-weight: 600;
+        border-bottom: 1px solid rgba(255,255,255,0.08); 
+    }
+    
+    .navbar { z-index: 2100 !important; } /* Push navbar above overlay */
+    
+    .drawer-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.65);
+        backdrop-filter: blur(8px);
+        z-index: 2050; /* Below navbar/drawer */
+        display: none;
+    }
+    .drawer-overlay.active { display: block; }
+}
+
+/* ── Scroll Reveal Effects ─────────────────────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity, transform;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fix Hover Specificity Conflict with Reveal */
+.movie-card.reveal.active:hover {
+    transform: scale(1.08) translateY(0);
+    z-index: 100;
+}
+
+/* Disable transition during active 3D tilt for performance */
+.movie-card.tilt-active {
+    transition: none !important;
+}
+
+/* ── Mobile-Specific Animation Fixes ─────────────────────────────────── */
+@media (max-width: 992px) {
+    /* Always show card information on tablet/mobile since there's no hover */
+    .card-info {
+        transform: translateY(0);
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+        padding: 10px;
+    }
+    .movie-card:hover {
+        transform: none !important; /* Disable scaling hover on mobile touch */
+    }
+    
+    /* Make entrance animations faster and more likely to trigger on mobile */
+    .reveal {
+        transition-duration: 0.5s !important;
+        transform: translateY(20px);
+    }
 }
 
 @media (max-width: 480px) {
-    .hero-content h1 { font-size: 2rem; }
-    .movies-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .movie-card img { height: 220px; }
-    .logo-text-part { display: none; }
-    .btn { padding: 10px 18px; font-size: 14px; }
-    
-    .error-404-code { font-size: 80px; }
-    .error-404-msg { font-size: 28px; }
+    .movie-card {
+        min-width: 150px;
+        height: 220px; /* Poster style on very small mobile */
+    }
+    .card-title { font-size: 13px; }
+}
+/* ─────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .hero-content h1 { font-size: 2rem; line-height: 1.2; }
+    .hero-meta span { font-size: 12px; }
+    .movies-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
 }
 /* ─────────────────────────────────────────────────────────────────── */
 
