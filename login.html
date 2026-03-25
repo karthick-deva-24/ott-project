@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stackly - Login / Register</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(rgba(11, 11, 13, 0.8), rgba(11, 11, 13, 0.9)), url('https://images.unsplash.com/photo-1626814026160-2237a95fc5a0?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: rgba(22, 22, 26, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: var(--transition);
+            outline: none;
+            font-family: var(--font-family);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .input-group select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .auth-btn {
+            background: var(--accent);
+            color: var(--bg-main);
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .auth-switch a {
+            color: var(--accent);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .form-message {
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+            margin-bottom: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .form-message.success {
+            background: rgba(94, 232, 82, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .back-home {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: var(--text-secondary);
+            font-size: 28px;
+            transition: var(--transition);
+            background: rgba(0,0,0,0.5);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .back-home:hover {
+            color: var(--accent);
+            background: rgba(0,0,0,0.8);
+            transform: translateX(-3px);
+            border-color: var(--accent);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 500px) {
+            .auth-box {
+                padding: 30px 20px;
+            }
+            .back-home {
+                top: 15px;
+                left: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <a href="index.html" class="back-home"><i class="ri-arrow-left-line"></i></a>
+        
+        <!-- Login Form -->
+        <div class="auth-box" id="login-box">
+            <div class="auth-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue to Stackly.</p>
+            </div>
+            <div id="login-message" class="form-message"></div>
+            <form class="auth-form" id="login-form">
+                <div class="input-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="e.g. user@stackly.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign In</button>
+            </form>
+            <div class="auth-switch">
+                Don't have an account? <a id="show-register">Create Account</a>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-box" id="register-box" style="display: none;">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p>Join Stackly today.</p>
+            </div>
+            <div id="register-message" class="form-message"></div>
+            <form class="auth-form" id="register-form-actual">
+                <div class="input-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" placeholder="John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" placeholder="e.g. user@stackly.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="reg-role">Account Role</label>
+                    <select id="reg-role" required>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" placeholder="Create a password" required>
+                </div>
+                <button type="submit" class="auth-btn">Sign Up</button>
+            </form>
+            <div class="auth-switch">
+                Already have an account? <a id="show-login">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // UI Toggle
+             const loginBox = document.getElementById('login-box');
+             const registerBox = document.getElementById('register-box');
+             const showRegister = document.getElementById('show-register');
+             const showLogin = document.getElementById('show-login');
+
+             showRegister.addEventListener('click', () => {
+                 loginBox.style.display = 'none';
+                 registerBox.style.display = 'block';
+             });
+
+             showLogin.addEventListener('click', () => {
+                 registerBox.style.display = 'none';
+                 loginBox.style.display = 'block';
+             });
+
+             // Ensure local storage has users array
+             let users = JSON.parse(localStorage.getItem('stackly_users')) || [];
+
+             // Registration Logic
+             const registerForm = document.getElementById('register-form-actual');
+             const regMsg = document.getElementById('register-message');
+             
+             registerForm.addEventListener('submit', (e) => {
+                 e.preventDefault();
+                 const name = document.getElementById('reg-name').value.trim();
+                 const email = document.getElementById('reg-email').value.trim();
+                 const role = document.getElementById('reg-role').value;
+                 const pass = document.getElementById('reg-password').value;
+
+                 const newUser = { name, email, role, password: pass };
+                 const existingIndex = users.findIndex(u => u.email === email);
+                 if (existingIndex !== -1) {
+                     users[existingIndex] = newUser;
+                 } else {
+                     users.push(newUser);
+                 }
+                 localStorage.setItem('stackly_users', JSON.stringify(users));
+
+                 regMsg.textContent = 'Account created successfully! You can now log in.';
+                 regMsg.className = 'form-message success';
+                 regMsg.style.display = 'block';
+
+                 registerForm.reset();
+                 setTimeout(() => {
+                     regMsg.style.display = 'none';
+                     showLogin.click();
+                 }, 2000);
+             });
+
+             // Login Logic
+             const loginForm = document.getElementById('login-form');
+             const logMsg = document.getElementById('login-message');
+
+             loginForm.addEventListener('submit', (e) => {
+                 e.preventDefault();
+                 const email = document.getElementById('login-email').value.trim();
+                 const pass = document.getElementById('login-password').value;
+
+                 const user = users.find(u => u.email === email && u.password === pass);
+                 if (!user) {
+                     logMsg.textContent = 'Invalid email or password.';
+                     logMsg.className = 'form-message';
+                     logMsg.style.display = 'block';
+                     return;
+                 }
+
+                 // Store logged in user info
+                 const currentSession = { email: user.email, name: user.name, role: user.role };
+                 localStorage.setItem('stackly_current_user', JSON.stringify(currentSession));
+
+                 logMsg.textContent = 'Login successful! Redirecting...';
+                 logMsg.className = 'form-message success';
+                 logMsg.style.display = 'block';
+
+                 setTimeout(() => {
+                     if (user.role === 'Admin') {
+                         window.location.href = 'admin-dashboard.html';
+                     } else {
+                         window.location.href = 'user-dashboard.html';
+                     }
+                 }, 1000);
+             });
+        });
+    </script>
+</body>
+</html>
