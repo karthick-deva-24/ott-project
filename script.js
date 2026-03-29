@@ -1099,8 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalRelatedGrid = document.getElementById('modal-related-grid');
 
     const show404 = () => {
-        modalBigPlay.style.display = 'none';
-        modal404.classList.add('visible');
+        window.location.href = '404.html';
     };
 
     // Clicking the big play button OR the preview image shows 404
@@ -1167,10 +1166,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'hidden';
     };
 
-    // Play button → error
+    // Play button → 404 page
     modalPlayBtn.addEventListener('click', () => {
-        modalErrorToast.classList.add('visible');
-        setTimeout(() => modalErrorToast.classList.remove('visible'), 4000);
+        window.location.href = '404.html';
     });
 
     // Close triggers
@@ -1191,41 +1189,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroPlayBtn) {
         heroPlayBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            openModal(heroPlayData);
+            window.location.href = '404.html';
         });
     }
 
-    // Add global 404 overlay to body if not exists
-    if (!document.getElementById('global-404')) {
-        document.body.insertAdjacentHTML('beforeend', `
-            <div id="global-404" class="error-404-overlay">
-                <div class="error-404-content">
-                    <div class="error-404-code">404</div>
-                    <div class="error-404-msg">Content Not Found</div>
-                    <p class="error-404-sub">The page or content you are trying to access is currently unavailable or doesn't exist in our library.</p>
-                    <button class="error-404-btn" id="close-404"><i class="ri-arrow-left-line"></i> Back to Safety</button>
-                </div>
-            </div>
-        `);
-    }
-
-    const global404 = document.getElementById('global-404');
-    const close404 = document.getElementById('close-404');
-
-    // Global 404 Trigger
+    // Global 404 Trigger — redirects to dedicated 404 page
     const showGlobal404 = (e) => {
         if (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
         }
-        global404.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        window.location.href = '404.html';
     };
-
-    close404.addEventListener('click', () => {
-        global404.classList.remove('active');
-        document.body.style.overflow = '';
-    });
 
     // Attach 404 to specified elements
     const attach404Listeners = () => {
@@ -1701,69 +1676,13 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Auth Logic for UI ────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     const currentUser = JSON.parse(localStorage.getItem('stackly_current_user'));
-    const navRight = document.querySelector('.nav-right');
-    const navLinks = document.querySelector('.nav-links');
 
-    if (currentUser && navRight) {
-        // Find existing profile icon and remove it
-        const profileIcon = navRight.querySelector('.profile-icon');
-        if (profileIcon) {
-            profileIcon.remove();
-        }
-
-        // Create user info display
-        const userInfoContainer = document.createElement('div');
-        userInfoContainer.className = 'user-profile-widget';
-        userInfoContainer.innerHTML = `
-            <div class="user-display">
-                <div class="user-avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
-                <div class="user-details">
-                    <span class="u-email">${currentUser.email}</span>
-                    <span class="u-role ${currentUser.role === 'Admin' ? 'admin' : 'user'}">${currentUser.role}</span>
-                </div>
-                <i class="ri-arrow-down-s-line dropdown-arrow"></i>
-            </div>
-            <div class="user-dropdown">
-                <a href="#" id="logout-btn"><i class="ri-logout-box-r-line"></i> Logout</a>
-            </div>
-        `;
-        
-        navRight.appendChild(userInfoContainer);
-
-        // Add toggle logic
-        const userDisplay = userInfoContainer.querySelector('.user-display');
-        const dropdown = userInfoContainer.querySelector('.user-dropdown');
-        
-        userDisplay.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown.classList.toggle('active');
+    // ── Redirect Back Navigation to Home from Dashboard ─────────────
+    if (window.location.pathname.includes('dashboard') && currentUser) {
+        history.pushState(null, null, window.location.href);
+        window.addEventListener('popstate', function() {
+            window.location.href = 'index.html';
         });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!userInfoContainer.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Logout logic
-        const logoutBtn = userInfoContainer.querySelector('#logout-btn');
-        logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('stackly_current_user');
-            
-            if (window.location.pathname.includes('dashboard')) {
-                window.location.href = 'login.html';
-            } else {
-                window.location.reload();
-            }
-        });
-    } else {
-        // Ensure profile icon links to login
-        const profileIcon = navRight?.querySelector('.profile-icon');
-        if (profileIcon) {
-            profileIcon.href = 'login.html';
-        }
     }
 });
 // ─────────────────────────────────────────────────────────────────────
@@ -1772,7 +1691,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const menuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
-    
+    const menuIcon = menuBtn ? menuBtn.querySelector('i') : null;
+
     // Create overlay if it doesn't exist
     let overlay = document.querySelector('.drawer-overlay');
     if (!overlay) {
@@ -1781,23 +1701,43 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(overlay);
     }
 
+    const openMenu = () => {
+        if (navLinks) navLinks.classList.add('mobile-active');
+        overlay.classList.add('active');
+        if (menuIcon) {
+            menuIcon.className = 'ri-close-line';
+        }
+    };
+
+    const closeMenu = () => {
+        if (navLinks) navLinks.classList.remove('mobile-active');
+        overlay.classList.remove('active');
+        if (menuIcon) {
+            menuIcon.className = 'ri-menu-3-line';
+        }
+    };
+
     if (menuBtn && navLinks) {
         menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('mobile-active');
-            overlay.classList.toggle('active');
+            if (navLinks.classList.contains('mobile-active')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
         });
 
-        overlay.addEventListener('click', () => {
-            navLinks.classList.remove('mobile-active');
-            overlay.classList.remove('active');
-        });
+        overlay.addEventListener('click', closeMenu);
 
         // Close on link click
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('mobile-active');
-                overlay.classList.remove('active');
-            });
+            link.addEventListener('click', closeMenu);
         });
+
+        // Add a visible close (X) button inside the drawer
+        const closeBtnDrawer = document.createElement('li');
+        closeBtnDrawer.className = 'drawer-close-btn';
+        closeBtnDrawer.innerHTML = '<i class="ri-close-line"></i>';
+        navLinks.insertBefore(closeBtnDrawer, navLinks.firstChild);
+        closeBtnDrawer.addEventListener('click', closeMenu);
     }
 });

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stackly - Watch TV Shows & Movies</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- Remix Icons -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
@@ -36,10 +39,11 @@
             </a>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="movies.html" >Movies</a></li>
-                <li><a href="tvshows.html" >TV Shows</a></li>
-                <li><a href="services.html" >Services</a></li>
-                <li><a href="contact.html" >Contact</a></li>
+                <li><a href="movies.html">Movies</a></li>
+                <li><a href="tvshows.html">TV Shows</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li class="mobile-login-item"><a href="login.html"><i class="ri-user-line"></i> Login</a></li>
             </ul>
         </div>
         <div class="nav-right">
@@ -48,8 +52,8 @@
                 <input type="text" id="search-input" placeholder="Find movies, tv shows and more..." autocomplete="off">
                 <div class="search-dropdown" id="search-dropdown"></div>
             </div>
-            <a href="#" class="profile-icon">
-                <i class="ri-user-line"></i>
+            <a href="login.html" class="navbar-login-btn">
+                <i class="ri-user-line"></i> Login
             </a>
         </div>
         <div class="mobile-menu-btn">
@@ -60,7 +64,7 @@
     <!-- Hero Section -->
     <header class="hero">
         <div class="hero-bg">
-            <img src="https://images.unsplash.com/photo-1616530940355-351fabd9524b?q=80&w=1935&auto=format&fit=crop" alt="Hero Background">
+            <img src="assets/images/hero_bg.webp" alt="Hero Background">
             <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
@@ -73,10 +77,12 @@
                 <span class="maturity">TV-MA</span>
             </div>
             <p class="hero-desc">
-                In the year 2024, the ozone layer is believed to have been destroyed, and it's up to MacLeod and Ramirez to set things right. Opposition comes from both the planet Zeist (MacLeod and Ramirez's homeworld) and a corporation profiting from the supposed lack of ozone. Also,...
+                In the year 2024, the ozone layer is believed to have been destroyed, and it's up to MacLeod and Ramirez
+                to set things right. Opposition comes from both the planet Zeist (MacLeod and Ramirez's homeworld) and a
+                corporation profiting from the supposed lack of ozone. Also,...
             </p>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-primary" id="hero-play-btn"><i class="ri-play-fill"></i> Play</a>
+                <a href="404.html" class="btn btn-primary" id="hero-play-btn"><i class="ri-play-fill"></i> Play</a>
                 <a href="#" class="btn btn-secondary"><i class="ri-bookmark-line"></i> Save for later</a>
             </div>
         </div>
@@ -113,7 +119,7 @@
                 <button class="slider-btn right"><i class="ri-arrow-right-s-line"></i></button>
             </div>
         </section>
-        
+
         <!-- Thriller Section -->
         <section class="movie-section">
             <div class="section-header">
@@ -133,7 +139,8 @@
         <section class="movie-section">
             <div class="section-header">
                 <h2 class="section-title">Entertainment</h2>
-                <a href="movies.html?cat=Entertainment" class="view-all">View all <i class="ri-arrow-right-s-line"></i></a>
+                <a href="movies.html?cat=Entertainment" class="view-all">View all <i
+                        class="ri-arrow-right-s-line"></i></a>
             </div>
             <div class="slider-container">
                 <button class="slider-btn left"><i class="ri-arrow-left-s-line"></i></button>
@@ -185,6 +192,7 @@
                         <li><a href="tvshows.html"><i class="ri-tv-2-line"></i> TV Shows</a></li>
                         <li><a href="services.html"><i class="ri-service-line"></i> Services</a></li>
                         <li><a href="contact.html"><i class="ri-contacts-line"></i> Contact</a></li>
+                        <li><a href="login.html"><i class="ri-user-line"></i> Login</a></li>
                     </ul>
                 </div>
                 <div class="link-group">
@@ -215,4 +223,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -46,6 +46,13 @@
             flex: 1;
             padding: 40px 5%;
         }
+        /* Tabs Logic */
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -119,69 +126,16 @@
         .admin-section h2 i {
             color: var(--accent);
         }
-        .recent-users-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .recent-users-table th, .recent-users-table td {
-            text-align: left;
-            padding: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .recent-users-table th {
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
-        .recent-users-table td {
-            font-size: 15px;
-        }
-        .recent-users-table tr:hover td {
-            background: rgba(255,255,255,0.02);
-        }
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .status-badge.admin { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
-        .status-badge.user { background: rgba(94, 232, 82, 0.2); color: var(--accent); }
-        
-        .action-btns button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 6px 12px;
-            border-radius: 6px;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            margin-right: 5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .action-btns button:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(94, 232, 82, 0.2);
-        }
-        .action-btns button.delete:hover {
-            background: #ff4757;
-            border-color: #ff4757;
-            color: #fff;
-            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
-        }
 
-        /* Abstract forms used in dashboards */
+        /* Forms */
         .dash-form {
             display: flex;
             flex-direction: column;
             gap: 20px;
             max-width: 500px;
+        }
+        .dash-form .input-group {
+            display: flex; flex-direction: column; gap: 5px;
         }
         .dash-form .input-group input, .dash-form .input-group select {
             background: rgba(0, 0, 0, 0.3);
@@ -198,7 +152,6 @@
         .dash-form label {
             font-size: 13px;
             color: var(--text-secondary);
-            margin-bottom: 5px;
         }
         .dash-btn {
             background: var(--accent);
@@ -220,28 +173,114 @@
             box-shadow: 0 10px 25px rgba(94, 232, 82, 0.3);
         }
 
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ── Table overflow wrapper ── */
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .recent-users-table { width: 100%; min-width: 460px; border-collapse: collapse; }
+        .recent-users-table th, .recent-users-table td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        
+        .recent-users-table th {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .recent-users-table td { font-size: 14px; }
+        .recent-users-table tr:hover td { background: rgba(255,255,255,0.025); }
+
+        .action-btns button {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 500;
+            margin-right: 6px;
+            font-family: var(--font-family);
+        }
+        .action-btns button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .action-btns button.delete {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+        .action-btns button.delete:hover {
+            background: #e74c3c;
+            color: #fff;
+            border-color: #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* ── Responsive breakpoints ── */
+        @media (max-width: 992px) {
+            .admin-layout { margin-top: 70px; }
+        }
+
         @media (max-width: 768px) {
             .admin-layout { flex-direction: column; margin-top: 60px; }
-            .admin-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 5px; position: sticky; top: 70px; z-index: 100; border-bottom: 1px solid var(--border-color); }
-            .admin-sidebar a { white-space: nowrap; padding: 12px 20px; border-right: none; border-bottom: 3px solid transparent; flex: 1; justify-content: center; }
-            .admin-sidebar a:hover, .admin-sidebar a.active { border-bottom: 3px solid var(--accent); border-right: none; background: transparent; }
-            .admin-main { padding: 30px 20px; }
-            .stat-grid { grid-template-columns: 1fr; }
-            .admin-header h1 { font-size: 22px; }
+            .admin-sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+                padding: 4px 8px;
+                position: sticky;
+                top: 60px;
+                z-index: 100;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .admin-sidebar::-webkit-scrollbar { display: none; }
+            .admin-sidebar a {
+                white-space: nowrap;
+                padding: 10px 14px;
+                border-right: none !important;
+                border-bottom: 3px solid transparent;
+                flex: 0 0 auto;
+                font-size: 13px;
+                gap: 8px;
+            }
+            .admin-sidebar a:hover,
+            .admin-sidebar a.active {
+                border-bottom: 3px solid var(--accent);
+                border-right: none;
+                background: transparent;
+            }
+            .admin-main { padding: 20px 16px; overflow-x: hidden; }
+            .stat-grid { grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+            .admin-header { flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+            .admin-header h1 { font-size: 20px; }
+            .admin-section { padding: 16px 14px; margin-bottom: 20px; }
+            .dash-form { max-width: 100%; }
+            .dash-form > div[style*="flex"] { flex-direction: column !important; }
         }
+
         @media (max-width: 480px) {
-            .stat-card { padding: 15px; gap: 10px; }
+            .admin-layout { margin-top: 60px; }
+            .stat-grid { grid-template-columns: 1fr; gap: 10px; }
+            .stat-card { padding: 14px; gap: 12px; }
             .stat-info h3 { font-size: 20px; }
-            .admin-section { padding: 15px; }
-            .recent-users-table th, .recent-users-table td { padding: 10px 5px; font-size: 13px; }
+            .admin-section { padding: 12px 10px; }
+            .recent-users-table th, .recent-users-table td { padding: 8px 6px; font-size: 12px; }
+            .recent-users-table th { font-size: 11px; }
+            .action-btns button { padding: 6px 10px; font-size: 11px; margin-right: 3px; }
+            /* Icon-only sidebar on very small screens */
+            .admin-sidebar a { padding: 10px 12px; }
+            .admin-sidebar a span { display: none; }
+            .admin-sidebar a i { font-size: 20px; }
         }
     </style>
 </head>
@@ -320,7 +359,7 @@
                 </div>
                 <div class="admin-section">
                     <h2><i class="ri-group-line"></i> System Users Overview</h2>
-                    <div style="overflow-x: auto;">
+                    <div class="table-wrap">
                         <table class="recent-users-table">
                             <thead>
                                 <tr>
@@ -346,6 +385,7 @@
                 </div>
                 <div class="admin-section">
                     <h2><i class="ri-movie-line"></i> Recent Uploads</h2>
+                    <div class="table-wrap">
                     <table class="recent-users-table">
                         <thead>
                             <tr>
@@ -380,6 +420,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
 

@@ -321,9 +321,9 @@
 
                  setTimeout(() => {
                      if (user.role === 'Admin') {
-                         window.location.href = 'admin-dashboard.html';
+                         window.location.replace('admin-dashboard.html');
                      } else {
-                         window.location.href = 'user-dashboard.html';
+                         window.location.replace('user-dashboard.html');
                      }
                  }, 1000);
              });
