@@ -298,6 +298,61 @@
             .admin-sidebar a { padding: 10px 12px; }
             .admin-sidebar a i { font-size: 20px; }
         }
+
+        /* User Info in Navbar */
+        .user-nav-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 18px;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+        }
+        .user-nav-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .user-nav-email {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .user-nav-role {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-logout-btn {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .nav-logout-btn:hover {
+            background: #e74c3c;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+        @media (max-width: 580px) {
+            .user-nav-details { display: none; }
+            .user-nav-wrapper { padding: 5px; background: transparent; border: none; }
+        }
     </style>
 </head>
 <body>
@@ -312,7 +367,7 @@
                 <li><a href="#" class="active"><i class="ri-user-smile-line"></i> My Space</a></li>
             </ul>
         </div>
-        <div class="nav-right">
+        <div class="nav-right" id="nav-auth-container">
             <!-- Auth logic inject -->
         </div>
     </nav>
@@ -524,6 +579,28 @@
             
             if (currentUser) {
                 document.getElementById('user-welcome-text').innerHTML = `Welcome Back, <span>${currentUser.name}</span>`;
+                
+                // Add Email and Logout to Navbar
+                const navAuth = document.getElementById('nav-auth-container');
+                if (navAuth) {
+                    navAuth.innerHTML = `
+                        <div class="user-nav-wrapper">
+                            <div class="user-nav-details">
+                                <span class="user-nav-email"><i class="ri-mail-line"></i> ${currentUser.email}</span>
+                                <span class="user-nav-role">${currentUser.role}</span>
+                            </div>
+                        </div>
+                        <button class="nav-logout-btn" id="nav-logout-btn">
+                            <i class="ri-logout-box-r-line"></i> Logout
+                        </button>
+                    `;
+                    
+                    document.getElementById('nav-logout-btn').addEventListener('click', () => {
+                        localStorage.removeItem('stackly_current_user');
+                        window.location.replace('login.html');
+                    });
+                }
+
                 // Fill profile data
                 const profName = document.getElementById('prof-name');
                 const profEmail = document.getElementById('prof-email');
