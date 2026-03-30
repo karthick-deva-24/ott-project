@@ -12,8 +12,8 @@
     <style>
         .admin-layout {
             display: flex;
-            margin-top: 80px;
-            min-height: calc(100vh - 80px);
+            margin-top: 65px; /* Aligned with navbar height */
+            min-height: calc(100vh - 65px);
         }
         .admin-sidebar {
             width: 250px;
@@ -229,7 +229,7 @@
         }
 
         @media (max-width: 768px) {
-            .admin-layout { flex-direction: column; margin-top: 60px; }
+            .admin-layout { flex-direction: column; margin-top: 65px; }
             .admin-sidebar {
                 width: 100%;
                 flex-direction: row;
@@ -238,10 +238,11 @@
                 scrollbar-width: none;
                 padding: 4px 8px;
                 position: sticky;
-                top: 60px;
-                z-index: 100;
+                top: 65px;
+                z-index: 999; /* Ensure it stays above content but below navbar */
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
+                background: var(--bg-main);
             }
             .admin-sidebar::-webkit-scrollbar { display: none; }
             .admin-sidebar a {
@@ -269,7 +270,8 @@
         }
 
         @media (max-width: 480px) {
-            .admin-layout { margin-top: 60px; }
+            .admin-layout { margin-top: 65px; }
+            .admin-sidebar { top: 65px; }
             .stat-grid { grid-template-columns: 1fr; gap: 10px; }
             .stat-card { padding: 14px; gap: 12px; }
             .stat-info h3 { font-size: 20px; }
@@ -277,7 +279,9 @@
             .recent-users-table th, .recent-users-table td { padding: 8px 6px; font-size: 12px; }
             .recent-users-table th { font-size: 11px; }
             .action-btns button { padding: 6px 10px; font-size: 11px; margin-right: 3px; }
-            /* Icon-only sidebar on very small screens */
+            /* Prevent overlap */
+            .logo-text-part { display: none !important; }
+            .nav-links { display: none !important; }
             .admin-sidebar a { padding: 10px 12px; }
             .admin-sidebar a span { display: none; }
             .admin-sidebar a i { font-size: 20px; }
@@ -335,7 +339,15 @@
         }
         @media (max-width: 580px) {
             .user-nav-details { display: none; }
-            .user-nav-wrapper { padding: 5px; background: transparent; border: none; }
+            .user-nav-wrapper { padding: 4px; background: transparent; border: none; }
+            .nav-logout-btn { padding: 5px 10px; font-size: 11px; }
+            .nav-logout-btn span { display: none; }
+        }
+        
+        /* Navbar overlap fix */
+        .navbar.scrolled {
+            padding: 10px 5% !important;
+            height: 65px;
         }
     </style>
 </head>
@@ -580,7 +592,7 @@
                             </div>
                         </div>
                         <button class="nav-logout-btn" id="nav-logout-btn">
-                            <i class="ri-logout-box-r-line"></i> Logout
+                            <i class="ri-logout-box-r-line"></i> <span>Logout</span>
                         </button>
                     `;
                     

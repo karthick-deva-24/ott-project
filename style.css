@@ -343,6 +343,7 @@ ul {
     top: 0;
     left: 0;
     z-index: 1;
+    clip-path: polygon(26% 0, 100% 0, 100% 100%, 26% 100%);
     filter: brightness(0) saturate(100%) invert(72%) sepia(50%) saturate(692%) hue-rotate(58deg) brightness(97%) contrast(92%);
 }
 
@@ -588,7 +589,7 @@ ul {
     min-height: 600px;
     display: flex;
     align-items: center;
-    padding: 0 5%;
+    padding: 0 5% 60px 5%; /* bottom padding added for spacing */
 }
 
 .hero-bg {
@@ -783,7 +784,7 @@ ul {
 
 /* Main Content & Slider */
 .main-content {
-    margin-top: -100px;
+    margin-top: -30px; /* Reduced to avoid overlapping with hero buttons */
     position: relative;
     z-index: 20;
     padding-bottom: 50px;
@@ -2111,8 +2112,9 @@ body.page-transition-out {
 
 @media (max-width: 768px) {
     .navbar {
-        padding: 15px 5%;
-        height: 70px;
+        padding: 10px 5%;
+        height: 65px;
+        backdrop-filter: blur(15px);
     }
 
     .logo-text-part {
@@ -2126,15 +2128,20 @@ body.page-transition-out {
         gap: 5px;
     }
 
+    .logo-text-part {
+        display: block;
+        max-width: 70px;
+    }
+
     .main-content {
-        margin-top: 40px;
-        padding-top: 0;
+        margin-top: 65px;
+        padding-top: 20px;
     }
 
     .hero {
-        min-height: 85vh;
-        padding-top: 120px;
-        padding-bottom: 60px;
+        min-height: 80vh;
+        padding-top: 100px;
+        padding-bottom: 40px;
     }
 
     .section-header {
@@ -2153,7 +2160,7 @@ body.page-transition-out {
         background: var(--bg-secondary);
         flex-direction: column;
         padding: 80px 30px;
-        z-index: 1001;
+        z-index: 2200;
         box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
         animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -2174,7 +2181,7 @@ body.page-transition-out {
         /* Solid dark background */
         flex-direction: column;
         padding: 100px 40px;
-        z-index: 2100;
+        z-index: 2200;
         /* Extremely high */
         box-shadow: -15px 0 40px rgba(0, 0, 0, 0.9);
         animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2216,7 +2223,7 @@ body.page-transition-out {
     }
 
     .navbar {
-        z-index: 2100 !important;
+        z-index: 2150 !important;
     }
 
     .drawer-overlay {
@@ -2363,11 +2370,26 @@ body.page-transition-out {
         gap: 15px;
     }
 
-    /* Added more gap for buttons */
-    .movies-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-        padding: 0 10px;
+    .search-box input {
+        width: 100px;
+    }
+
+    .navbar-login-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .nav-right {
+        gap: 10px;
+    }
+
+    .logo {
+        height: 38px;
+    }
+
+    /* Prevent logo text overlap on very small phones */
+    .logo-text-part {
+        display: none !important;
     }
 }
 
