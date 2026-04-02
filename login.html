@@ -197,6 +197,13 @@
                     <input type="email" id="login-email" placeholder="e.g. user@stackly.com" required>
                 </div>
                 <div class="input-group">
+                    <label for="login-role">Account Role</label>
+                    <select id="login-role" required>
+                        <option value="User">User</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="input-group">
                     <label for="login-password">Password</label>
                     <input type="password" id="login-password" placeholder="Enter your password" required>
                 </div>
@@ -301,9 +308,10 @@
              loginForm.addEventListener('submit', (e) => {
                  e.preventDefault();
                  const email = document.getElementById('login-email').value.trim();
+                 const role = document.getElementById('login-role').value;
                  const pass = document.getElementById('login-password').value;
 
-                 const user = users.find(u => u.email === email && u.password === pass);
+                 const user = users.find(u => u.email === email && u.password === pass && u.role === role);
                  if (!user) {
                      logMsg.textContent = 'Invalid email or password.';
                      logMsg.className = 'form-message';
